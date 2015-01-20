@@ -14,11 +14,10 @@
         var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create });
 
         function preload () {
-
-            game.load.image('logo', 'phaser.png');
             game.load.image('grass', 'seamless-grass.png');
             game.load.image('castle', 'castle.png');
-
+            game.load.spritesheet('mgun', 'mgun.png', 64,64, 36);
+            game.load.spritesheet('laser', 'laser.png', 64,64, 8);
         }
 
         function create () {
@@ -27,6 +26,14 @@
             //grass.anchor.setTo(0.5, 0.5);
             var castle = game.add.sprite(500,400,'castle');
             castle.anchor.setTo(0.5, 0.5);
+
+            var mgun = game.add.sprite(100,100,'mgun');
+            mgun.animations.add('walk');
+            mgun.animations.play('walk',20,true);
+
+            var laser = game.add.sprite(200,100,'laser');
+            laser.animations.add('walk');
+            laser.animations.play('walk',4,true);
         }
         
         function update() {
