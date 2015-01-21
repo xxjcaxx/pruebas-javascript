@@ -11,35 +11,66 @@
 
     window.onload = function() {
 
-        var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create });
+        var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
         function preload () {
+	
+	  
+	    
+	    
             game.load.image('grass', 'seamless-grass.png');
             game.load.image('castle', 'castle.png');
             game.load.spritesheet('mgun', 'mgun.png', 64,64, 36);
             game.load.spritesheet('laser', 'laser.png', 64,64, 8);
-            game.load.image('tank','landscape/king_tiger.png')
+            game.load.image('tank','landscape/king_tiger.png');
+            
+            
         }
 
         function create () {
 
             var grass = game.add.tileSprite(0,0, 1000, 800, 'grass');
             //grass.anchor.setTo(0.5, 0.5);
-            var castle = game.add.sprite(500,400,'castle');
+            castle = game.add.sprite(500,400,'castle');
             castle.anchor.setTo(0.5, 0.5);
 
-            var mgun = game.add.sprite(100,100,'mgun');
+          /*  var mgun = game.add.sprite(100,100,'mgun');
             mgun.animations.add('walk');
             mgun.animations.play('walk',20,true);
 
             var laser = game.add.sprite(200,100,'laser');
             laser.animations.add('walk');
-            laser.animations.play('walk',4,true);
+            laser.animations.play('walk',4,true);*/
             
-             var castle = game.add.sprite(500,100,'tank');
+            //var tank = game.add.sprite(100,100,'tank');
+            
+            
+            game.physics.startSystem(Phaser.Physics.ARCADE);
+	    tanks = game.add.group();
+	    tanks.enableBody = true;
+	    
+            
+              for (var i = 0; i < 50; i++)
+	      {
+	      var tank = tanks.create(game.world.randomX, game.world.randomY, 'tank');
+	      }
+	      
+	      
         }
         
         function update() {
+         if (game.input.mousePointer.isDown)
+    {
+        //  First is the callback
+        //  Second is the context in which the callback runs, in this case game.physics.arcade
+        //  Third is the parameter the callback expects - it is always sent the Group child as the first parameter
+        tanks.forEach(game.physics.arcade.moveToObject, game.physics.arcade, castle, 5);
+    }
+    else
+    {
+        tanks.setAll('body.velocity.x', 0);
+        tanks.setAll('body.velocity.y', 0);
+    }
 }
 
     };
