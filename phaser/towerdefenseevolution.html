@@ -18,6 +18,7 @@
             game.load.image('castle', 'castle.png');
             game.load.spritesheet('mgun', 'mgun.png', 64,64, 36);
             game.load.spritesheet('laser', 'laser.png', 64,64, 8);
+            game.load.image('tank','landscape/king_tiger.png')
         }
 
         function create () {
@@ -34,6 +35,8 @@
             var laser = game.add.sprite(200,100,'laser');
             laser.animations.add('walk');
             laser.animations.play('walk',4,true);
+            
+             var castle = game.add.sprite(500,100,'tank');
         }
         
         function update() {
