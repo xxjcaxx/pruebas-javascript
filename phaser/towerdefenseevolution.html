@@ -11,7 +11,7 @@
 
     window.onload = function() {
 
-        var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+        var game = new Phaser.Game(1000, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render  });
 
         function preload () {
 	
@@ -46,34 +46,42 @@
             
             
             game.physics.startSystem(Phaser.Physics.ARCADE);
-	    tanks = game.add.group();
-	    tanks.enableBody = true;
+	        tanks = game.add.group();
+	        tanks.enableBody = true;
 	    
             
-              for (var i = 0; i < 50; i++)
-	      {
-	      var tank = tanks.create(game.world.randomX, game.world.randomY, 'tank');
-	      }
+            for (var i = 0; i < 50; i++)
+	           {
+	               var tank = tanks.create(i*70, 0, 'tank');
+                  game.physics.enable(tank, Phaser.Physics.ARCADE);
+	            }
+
+            castle.enableBody = true;
+           // castle.body.collideWorldBounds = true;
+           // castle.body.immovable = true;
+
+            //tanks.setAll('body.collideWorldBounds', true);
+            tanks.setAll('body.bounce.x', 0);
+            tanks.setAll('body.bounce.y', 0);
+            tanks.setAll('body.minBounceVelocity', 0);
 	      
 	      
         }
         
         function update() {
-         if (game.input.mousePointer.isDown)
-    {
+   
         //  First is the callback
         //  Second is the context in which the callback runs, in this case game.physics.arcade
         //  Third is the parameter the callback expects - it is always sent the Group child as the first parameter
-        tanks.forEach(game.physics.arcade.moveToObject, game.physics.arcade, castle, 5);
-    }
-    else
-    {
-        tanks.setAll('body.velocity.x', 0);
-        tanks.setAll('body.velocity.y', 0);
-    }
-}
+        tanks.forEach(game.physics.arcade.moveToObject, game.physics.arcade, this,castle, 100);
+   game.physics.arcade.collide(tanks);
 
     };
+
+    function render(){
+        game.debug.quadTree(game.physics.arcade.quadTree);
+    };
+}
 
     </script>
 
